@@ -5,7 +5,10 @@ import AppSidebarHeader from '@/components/AppSidebarHeader.vue';
 import AppContent from '@/components/AppContent.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, useForm } from '@inertiajs/vue3';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import VotingForm from '@/components/voting/VotingForm.vue';
+import { ref } from 'vue';
 
 defineProps<{ items: any }>();
 
@@ -15,6 +18,28 @@ const destroyItem = (id: number) => {
   if (confirm('Hapus data ini?')) {
     router.delete(`/voting/${id}`);
   }
+};
+
+const createOpen = ref(false);
+const form = useForm({
+  nis: '',
+  nama: '',
+  kelas: '',
+  jurusan: '',
+  foto: null as any,
+  visi: '',
+  misi: '',
+});
+
+const submitCreate = () => {
+  form.post('/voting', {
+    forceFormData: true,
+    onSuccess: () => {
+      createOpen.value = false;
+      form.reset('foto');
+    },
+    preserveScroll: true,
+  } as any);
 };
 </script>
 
@@ -39,11 +64,28 @@ const destroyItem = (id: number) => {
                 Kelola kandidat OSIS. Tambahkan, edit, dan hapus data dengan mudah.
               </p>
             </div>
-            <Link href="/voting/create">
-              <Button variant="outline" class="bg-white/70 backdrop-blur-sm dark:bg-neutral-800/60">Tambah</Button>
-            </Link>
+            <Button variant="outline" class="bg-white/70 backdrop-blur-sm dark:bg-neutral-800/60" @click="createOpen = true">Tambah</Button>
           </div>
         </div>
+
+        <!-- Modal Tambah Data Voting -->
+        <Dialog v-model:open="createOpen">
+          <DialogContent class="sm:max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Tambah Data Voting</DialogTitle>
+              <DialogDescription>Isi form kandidat OSIS dengan lengkap.</DialogDescription>
+            </DialogHeader>
+            <div class="py-2">
+              <VotingForm :form="form" :on-submit="submitCreate" variant="plain" :show-actions="false" />
+            </div>
+            <DialogFooter>
+              <div class="flex w-full justify-end gap-2">
+                <Button variant="ghost" @click="createOpen = false">Batal</Button>
+                <Button variant="default" @click="submitCreate">Simpan</Button>
+              </div>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         <Card class="mt-4">
           <CardHeader>
@@ -53,17 +95,17 @@ const destroyItem = (id: number) => {
             <div
               class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
             >
-              <Card
-                v-for="item in items.data"
-                :key="item.id"
-                class="overflow-hidden group"
-              >
+          <Card
+            v-for="item in items.data"
+            :key="item.id"
+            class="overflow-hidden group p-0"
+          >
                 <CardHeader class="relative p-0">
                   <img
                     v-if="item.foto"
                     :src="photoUrl(item.foto)"
                     alt="Foto Kandidat"
-                    class="h-40 w-full object-cover"
+                    class="h-40 w-full object-contain"
                   />
                   <div v-else class="h-40 w-full bg-muted" />
                   <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />

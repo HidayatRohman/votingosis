@@ -9,6 +9,8 @@ import CardHeader from '@/components/ui/card/CardHeader.vue';
 import CardContent from '@/components/ui/card/CardContent.vue';
 import CardAction from '@/components/ui/card/CardAction.vue';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { Pencil, Trash2, UserPlus } from 'lucide-vue-next';
 import type { BreadcrumbItem } from '@/types';
 
@@ -19,8 +21,14 @@ const breadcrumbItems: BreadcrumbItem[] = [
 ];
 
 const confirmOpen = ref(false);
+const createOpen = ref(false);
 const selectedId = ref<number | null>(null);
 const formDelete = useForm({});
+const formCreate = useForm({
+  name: '',
+  email: '',
+  password: '',
+});
 
 function askDelete(id: number) {
   selectedId.value = id;
@@ -37,6 +45,15 @@ function performDelete() {
     },
   });
 }
+
+function submitCreate() {
+  formCreate.post('/users', {
+    onSuccess: () => {
+      createOpen.value = false;
+      formCreate.reset();
+    },
+  });
+}
 </script>
 
 <template>
@@ -48,11 +65,9 @@ function performDelete() {
         <CardHeader class="border-b pb-4">
           <HeadingSmall title="Users" description="Kelola pengguna aplikasi" />
           <CardAction>
-            <Button as-child>
-              <Link href="/users/create">
-                <UserPlus class="mr-2 h-4 w-4" />
-                Tambah User
-              </Link>
+            <Button @click="createOpen = true">
+              <UserPlus class="mr-2 h-4 w-4" />
+              Tambah User
             </Button>
           </CardAction>
         </CardHeader>
@@ -104,6 +119,36 @@ function performDelete() {
           <DialogFooter>
             <Button variant="outline" @click="confirmOpen = false">Batal</Button>
             <Button class="bg-red-600 hover:bg-red-700" :disabled="formDelete.processing" @click="performDelete">Hapus</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog v-model:open="createOpen">
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Tambah User</DialogTitle>
+            <DialogDescription>Masukkan data pengguna baru.</DialogDescription>
+          </DialogHeader>
+          <div class="grid gap-4">
+            <div class="grid gap-2">
+              <Label for="name">Nama</Label>
+              <Input id="name" v-model="formCreate.name" type="text" />
+              <p v-if="formCreate.errors.name" class="text-sm text-red-600">{{ formCreate.errors.name }}</p>
+            </div>
+            <div class="grid gap-2">
+              <Label for="email">Email</Label>
+              <Input id="email" v-model="formCreate.email" type="email" />
+              <p v-if="formCreate.errors.email" class="text-sm text-red-600">{{ formCreate.errors.email }}</p>
+            </div>
+            <div class="grid gap-2">
+              <Label for="password">Password</Label>
+              <Input id="password" v-model="formCreate.password" type="password" />
+              <p v-if="formCreate.errors.password" class="text-sm text-red-600">{{ formCreate.errors.password }}</p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" @click="createOpen = false">Batal</Button>
+            <Button :disabled="formCreate.processing" @click="submitCreate">Simpan</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

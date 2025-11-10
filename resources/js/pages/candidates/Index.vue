@@ -23,7 +23,33 @@ const submitVote = (id: number) => {
       <AppContent class="p-4">
         <AppSidebarHeader />
 
-        <h1 class="text-xl font-semibold mb-4">Kandidat</h1>
+        <!-- Hero Header dengan background -->
+        <div
+          class="relative overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border mb-4"
+        >
+          <div
+            class="absolute inset-0 opacity-25"
+            :style="{ background: 'radial-gradient(circle at 15% 20%, #93c5fd33, transparent 35%), radial-gradient(circle at 85% 0%, #60a5fa33, transparent 30%), linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #1d4ed8 100%)' }"
+          />
+          <div class="relative p-6 md:p-8 flex items-center justify-between">
+            <div>
+              <h1 class="text-2xl md:text-3xl font-bold">Kandidat OSIS</h1>
+              <p class="mt-1 text-sm md:text-base text-neutral-700 dark:text-neutral-300">
+                Pilih kandidat terbaik Anda. Satu akun hanya bisa vote sekali.
+              </p>
+            </div>
+            <div>
+              <span
+                v-if="props.hasVoted"
+                class="text-xs font-medium px-3 py-1 rounded bg-green-600 text-white"
+              >Sudah vote</span>
+              <span
+                v-else
+                class="text-xs font-medium px-3 py-1 rounded bg-yellow-500 text-white"
+              >Belum vote</span>
+            </div>
+          </div>
+        </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           <Card v-for="item in props.items" :key="item.id" class="overflow-hidden">

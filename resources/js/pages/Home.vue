@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { dashboard, login, register } from '@/routes';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
+import { computed } from 'vue';
 
 withDefaults(
   defineProps<{ canRegister: boolean }>(),
   { canRegister: true }
 );
+
+// Ambil URL logo aplikasi dari props (hasil upload di Settings/Logo)
+const page = usePage();
+const appLogoUrl = computed(() => page.props.appLogoUrl as string | null);
 </script>
 
 <template>
@@ -16,7 +21,9 @@ withDefaults(
     <header class="w-full">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         <div class="flex items-center gap-2">
-          <AppLogoIcon class="size-6 text-white" />
+          <!-- Tampilkan logo unggahan tanpa background jika tersedia -->
+          <img v-if="appLogoUrl" :src="appLogoUrl" alt="Logo" class="h-6 w-auto object-contain" />
+          <AppLogoIcon v-else class="size-6 text-white" />
           <span class="text-lg font-semibold tracking-tight">e-voting.</span>
         </div>
         <nav class="flex items-center gap-3">

@@ -9,6 +9,7 @@ import { edit as editFavicon } from '@/routes/favicon';
 import { edit as editProfile } from '@/routes/profile';
 import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
+import { edit as editCountdown } from '@/routes/countdown';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 
@@ -36,6 +37,10 @@ const sidebarNavItems: NavItem[] = [
     {
         title: 'Favicon',
         href: editFavicon(),
+    },
+    {
+        title: 'Countdown',
+        href: editCountdown(),
     },
 ];
 

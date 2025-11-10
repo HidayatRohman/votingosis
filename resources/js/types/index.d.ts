@@ -23,6 +23,7 @@ export type AppPageProps<
     name: string;
     appLogoUrl?: string | null;
     appFaviconUrl?: string | null;
+    votingSchedule?: { startAt: string | null; endAt: string | null };
     quote: { message: string; author: string };
     auth: Auth;
     sidebarOpen: boolean;

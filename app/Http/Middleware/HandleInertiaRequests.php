@@ -45,6 +45,9 @@ class HandleInertiaRequests extends Middleware
         $faviconPath = Setting::get('app_favicon');
         $appFaviconUrl = $faviconPath ? Storage::disk('public')->url($faviconPath) : null;
 
+        $votingStartAt = Setting::get('voting_start_at');
+        $votingEndAt = Setting::get('voting_end_at');
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -55,6 +58,10 @@ class HandleInertiaRequests extends Middleware
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'appLogoUrl' => $appLogoUrl,
             'appFaviconUrl' => $appFaviconUrl,
+            'votingSchedule' => [
+                'startAt' => $votingStartAt,
+                'endAt' => $votingEndAt,
+            ],
         ];
     }
 }

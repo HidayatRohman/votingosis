@@ -4,6 +4,7 @@ use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\BrandingController;
 use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
+use App\Http\Controllers\Settings\VotingScheduleController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -40,4 +41,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/two-factor', [TwoFactorAuthenticationController::class, 'show'])
         ->name('two-factor.show');
+
+    // Voting countdown settings page
+    Route::get('settings/countdown', function () {
+        return Inertia::render('settings/Countdown');
+    })->name('countdown.edit');
+
+    Route::put('settings/countdown', [VotingScheduleController::class, 'update'])
+        ->name('countdown.update');
 });

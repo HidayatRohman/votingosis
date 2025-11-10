@@ -11,7 +11,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('dashboard', function () {
-    $items = \App\Models\Voting::query()->select(['id', 'nama'])
+    $items = \App\Models\Voting::query()->select(['id', 'nama', 'nip', 'kelas', 'jurusan', 'foto'])
         ->withCount('votes')
         ->orderBy('nama')
         ->get();

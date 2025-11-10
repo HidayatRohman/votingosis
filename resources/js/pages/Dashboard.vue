@@ -4,6 +4,7 @@ import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { computed } from 'vue';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -12,7 +13,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const props = defineProps<{ stats?: { items: { id: number; nama: string; votes_count: number }[]; totalVotes: number } }>();
+const props = defineProps<{ stats?: { items: { id: number; nama: string; votes_count: number; nip?: string; kelas?: string; jurusan?: string; foto?: string }[]; totalVotes: number } }>();
 
 const percent = (count: number) => {
     const total = props.stats?.totalVotes ?? 0;
@@ -51,6 +52,8 @@ const gradientStyle = computed(() => {
     const stops = segs.map((s) => `${s.color} ${s.start}% ${s.end}%`).join(', ');
     return { background: `conic-gradient(${stops})` };
 });
+
+const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
 </script>
 
 <template>
@@ -80,13 +83,41 @@ const gradientStyle = computed(() => {
             <!-- Kartu daftar kandidat di bawah pie chart -->
             <div class="rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4">
                 <h2 class="text-lg font-semibold mb-2">Daftar Kandidat</h2>
-                <div class="space-y-2">
-                    <div v-for="item in props.stats?.items ?? []" :key="item.id" class="flex items-center justify-between text-sm">
-                        <span class="font-medium">{{ item.nama }}</span>
-                        <span class="text-muted-foreground">{{ item.votes_count }} suara</span>
-                    </div>
-                    <div v-if="(props.stats?.items?.length ?? 0) === 0" class="text-sm text-muted-foreground">Belum ada kandidat.</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  <Card v-for="item in props.stats?.items ?? []" :key="item.id" class="overflow-hidden">
+                    <CardHeader class="flex items-center justify-center text-center">
+                      <img
+                        v-if="item.foto"
+                        :src="photoUrl(item.foto)"
+                        alt="Foto Kandidat"
+                        class="h-40 w-40 object-cover rounded mx-auto"
+                      />
+                      <div v-else class="h-40 w-40 bg-muted rounded mx-auto" />
+                    </CardHeader>
+                    <CardContent class="space-y-1 text-sm">
+                      <div class="grid grid-cols-3">
+                        <span class="font-medium">NIS</span>
+                        <span class="col-span-2">{{ item.nip }}</span>
+                      </div>
+                      <div class="grid grid-cols-3">
+                        <span class="font-medium">Nama</span>
+                        <span class="col-span-2">{{ item.nama }}</span>
+                      </div>
+                      <div class="grid grid-cols-3">
+                        <span class="font-medium">Kelas</span>
+                        <span class="col-span-2">{{ item.kelas }}</span>
+                      </div>
+                      <div class="grid grid-cols-3">
+                        <span class="font-medium">Jurusan</span>
+                        <span class="col-span-2">{{ item.jurusan }}</span>
+                      </div>
+                      <div class="pt-3 flex justify-center">
+                        <span class="text-sm font-medium">Total Suara: {{ item.votes_count }}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
+                <div v-if="(props.stats?.items?.length ?? 0) === 0" class="mt-2 text-sm text-muted-foreground">Belum ada kandidat.</div>
             </div>
         </div>
     </AppLayout>

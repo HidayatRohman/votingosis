@@ -20,6 +20,7 @@ const form = useForm({
   name: '',
   email: '',
   password: '',
+  role: 'user',
 });
 
 function submit() {
@@ -54,6 +55,19 @@ function submit() {
               <Label for="password">Password</Label>
               <Input id="password" v-model="form.password" type="password" />
               <p v-if="form.errors.password" class="text-sm text-red-600">{{ form.errors.password }}</p>
+            </div>
+            <div class="grid gap-2">
+              <Label for="role">Role</Label>
+              <select
+                id="role"
+                v-model="form.role"
+                :aria-invalid="!!form.errors.role"
+                class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+              <p v-if="form.errors.role" class="text-sm text-red-600">{{ form.errors.role }}</p>
             </div>
           </div>
         </CardContent>

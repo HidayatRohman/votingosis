@@ -28,6 +28,7 @@ const formCreate = useForm({
   name: '',
   email: '',
   password: '',
+  role: 'user',
 });
 
 function askDelete(id: number) {
@@ -78,6 +79,7 @@ function submitCreate() {
                 <tr class="border-b bg-muted/30">
                   <th class="px-3 py-2">Nama</th>
                   <th class="px-3 py-2">Email</th>
+                  <th class="px-3 py-2">Role</th>
                   <th class="px-3 py-2">Dibuat</th>
                   <th class="px-3 py-2 text-right">Aksi</th>
                 </tr>
@@ -86,6 +88,7 @@ function submitCreate() {
                 <tr v-for="u in items.data" :key="u.id" class="border-b hover:bg-neutral-50 dark:hover:bg-neutral-900/40">
                   <td class="px-3 py-2">{{ u.name }}</td>
                   <td class="px-3 py-2">{{ u.email }}</td>
+                  <td class="px-3 py-2">{{ u.role ?? 'user' }}</td>
                   <td class="px-3 py-2">{{ new Date(u.created_at).toLocaleString() }}</td>
                   <td class="px-3 py-2">
                     <div class="flex justify-end gap-2">
@@ -144,6 +147,19 @@ function submitCreate() {
               <Label for="password">Password</Label>
               <Input id="password" v-model="formCreate.password" type="password" />
               <p v-if="formCreate.errors.password" class="text-sm text-red-600">{{ formCreate.errors.password }}</p>
+            </div>
+            <div class="grid gap-2">
+              <Label for="role">Role</Label>
+              <select
+                id="role"
+                v-model="formCreate.role"
+                :aria-invalid="!!formCreate.errors.role"
+                class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+              <p v-if="formCreate.errors.role" class="text-sm text-red-600">{{ formCreate.errors.role }}</p>
             </div>
           </div>
           <DialogFooter>

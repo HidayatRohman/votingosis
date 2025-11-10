@@ -32,6 +32,11 @@ const mainNavItems: NavItem[] = [
         href: '/candidates',
         icon: Users,
     },
+    {
+        title: 'Users',
+        href: '/users',
+        icon: Users,
+    },
 ];
 
 </script>

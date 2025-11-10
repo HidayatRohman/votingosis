@@ -5,8 +5,16 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
 Route::get('/', function () {
+    // Ambil sebagian data kandidat untuk preview di beranda
+    $items = \App\Models\Voting::query()->select(['id', 'nama', 'nip', 'kelas', 'jurusan', 'foto'])
+        ->withCount('votes')
+        ->orderBy('nama')
+        ->limit(8)
+        ->get();
+
     return Inertia::render('Home', [
         'canRegister' => Features::enabled(Features::registration()),
+        'previewCandidates' => $items,
     ]);
 })->name('home');
 

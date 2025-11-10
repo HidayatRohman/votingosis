@@ -1,0 +1,24 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use Laravel\Fortify\Features;
+
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canRegister' => Features::enabled(Features::registration()),
+    ]);
+})->name('home');
+
+Route::get('dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+// Voting CRUD routes
+Route::middleware(['auth'])->group(function () {
+    Route::resource('voting', \App\Http\Controllers\VotingController::class);
+    // Kandidat list page
+    Route::get('candidates', [\App\Http\Controllers\VotingController::class, 'candidates'])->name('candidates.index');
+});
+
+require __DIR__.'/settings.php';

@@ -52,7 +52,9 @@ const appLogoUrl = computed(() => page.props.appLogoUrl as string | null);
         </div>
         <div class="relative hidden lg:block">
           <div class="absolute inset-0 -z-10 opacity-30" :style="{ background: 'radial-gradient(circle at 20% 10%, #93c5fd, transparent 40%), radial-gradient(circle at 80% 0%, #60a5fa, transparent 35%)' }" />
-          <img src="/favicon.svg" alt="Illustration" class="mx-auto h-64 w-auto opacity-90" />
+          <!-- Ganti laravel favicon dengan gambar unggahan transparan -->
+          <img v-if="appLogoUrl" :src="appLogoUrl" alt="Illustration" class="mx-auto h-64 w-auto object-contain opacity-95" />
+          <AppLogoIcon v-else class="mx-auto size-64 text-white opacity-80" />
         </div>
       </div>
     </section>

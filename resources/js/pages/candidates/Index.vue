@@ -5,11 +5,15 @@ import AppSidebarHeader from '@/components/AppSidebarHeader.vue';
 import AppContent from '@/components/AppContent.vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 
-const props = defineProps<{ items: any[] }>();
+const props = defineProps<{ items: any[]; hasVoted: boolean }>();
 
 const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
+
+const submitVote = (id: number) => {
+  router.post(`/vote/${id}`);
+};
 </script>
 
 <template>
@@ -50,9 +54,9 @@ const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
                 <span class="col-span-2">{{ item.jurusan }}</span>
               </div>
               <div class="pt-3 flex justify-center">
-                <Link href="/voting">
-                  <Button size="sm">Vote</Button>
-                </Link>
+                <Button size="sm" :disabled="props.hasVoted" @click="submitVote(item.id)">
+                  {{ props.hasVoted ? 'Sudah vote' : 'Vote' }}
+                </Button>
               </div>
             </CardContent>
           </Card>

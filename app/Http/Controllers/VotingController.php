@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Voting;
+use App\Models\Vote;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -111,12 +113,36 @@ class VotingController extends Controller
 
     public function candidates(): Response
     {
-        $items = Voting::query()
-            ->orderBy('nama')
-            ->get();
+        $items = Voting::query()->orderBy('nama')->get();
+        $hasVoted = false;
+        if (Auth::check()) {
+            $hasVoted = Vote::query()->where('user_id', Auth::id())->exists();
+        }
 
         return Inertia::render('candidates/Index', [
             'items' => $items,
+            'hasVoted' => $hasVoted,
         ]);
+    }
+
+    public function vote(Voting $voting): RedirectResponse
+    {
+        $userId = Auth::id();
+        if (!$userId) {
+            return redirect()->back()->with('error', 'Unauthenticated');
+        }
+
+        // Cek apakah user sudah pernah vote
+        $already = Vote::query()->where('user_id', $userId)->exists();
+        if ($already) {
+            return redirect()->back()->with('status', 'already_voted');
+        }
+
+        Vote::create([
+            'user_id' => $userId,
+            'voting_id' => $voting->id,
+        ]);
+
+        return redirect()->back()->with('status', 'voted');
     }
 }

@@ -18,4 +18,9 @@ class Voting extends Model
         'visi',
         'misi',
     ];
+
+    public function votes()
+    {
+        return $this->hasMany(\App\Models\Vote::class);
+    }
 }

@@ -19,8 +19,7 @@ const submitVote = (id: number) => {
 <template>
   <AppShell variant="sidebar">
     <AppSidebar />
-    <div class="flex flex-1">
-      <AppContent class="p-4">
+    <AppContent variant="sidebar" class="p-4">
         <AppSidebarHeader />
 
         <!-- Hero Header dengan background -->
@@ -87,7 +86,6 @@ const submitVote = (id: number) => {
             </CardContent>
           </Card>
         </div>
-      </AppContent>
-    </div>
+    </AppContent>
   </AppShell>
 </template>

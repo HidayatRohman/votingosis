@@ -32,12 +32,10 @@ const submit = () => {
 <template>
   <AppShell variant="sidebar">
     <AppSidebar />
-    <div class="flex flex-1">
-      <AppContent class="p-4">
+    <AppContent variant="sidebar" class="p-4">
         <AppSidebarHeader />
         <h1 class="text-xl font-semibold mb-4">Edit Data Voting</h1>
         <VotingForm :form="form" :on-submit="submit" :editing-item="props.item" />
-      </AppContent>
-    </div>
+    </AppContent>
   </AppShell>
 </template>

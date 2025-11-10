@@ -42,6 +42,8 @@ class HandleInertiaRequests extends Middleware
 
         $logoPath = Setting::get('app_logo');
         $appLogoUrl = $logoPath ? Storage::disk('public')->url($logoPath) : null;
+        $faviconPath = Setting::get('app_favicon');
+        $appFaviconUrl = $faviconPath ? Storage::disk('public')->url($faviconPath) : null;
 
         return [
             ...parent::share($request),
@@ -52,6 +54,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'appLogoUrl' => $appLogoUrl,
+            'appFaviconUrl' => $appFaviconUrl,
         ];
     }
 }

@@ -22,6 +22,7 @@ export type AppPageProps<
 > = T & {
     name: string;
     appLogoUrl?: string | null;
+    appFaviconUrl?: string | null;
     quote: { message: string; author: string };
     auth: Auth;
     sidebarOpen: boolean;

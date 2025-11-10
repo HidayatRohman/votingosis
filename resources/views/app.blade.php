@@ -32,8 +32,25 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        @php
+            $faviconPath = \App\Models\Setting::get('app_favicon');
+            $faviconUrl = $faviconPath ? \Illuminate\Support\Facades\Storage::disk('public')->url($faviconPath) : null;
+            $faviconExt = $faviconPath ? pathinfo($faviconPath, PATHINFO_EXTENSION) : null;
+            $faviconType = match ($faviconExt) {
+                'svg' => 'image/svg+xml',
+                'ico' => 'image/x-icon',
+                'png' => 'image/png',
+                'webp' => 'image/webp',
+                default => null,
+            };
+        @endphp
+
+        @if($faviconUrl)
+            <link rel="icon" href="{{ $faviconUrl }}" @if($faviconType) type="{{ $faviconType }}" @endif>
+        @else
+            <link rel="icon" href="/favicon.ico" sizes="any">
+            <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        @endif
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
         <link rel="preconnect" href="https://fonts.bunny.net">

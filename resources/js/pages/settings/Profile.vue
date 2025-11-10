@@ -125,32 +125,7 @@ const appLogoUrl = page.props.appLogoUrl as string | null;
 
             <DeleteUser />
 
-            <div class="flex flex-col space-y-6 mt-8">
-                <HeadingSmall
-                    title="Logo aplikasi"
-                    description="Upload logo untuk ditampilkan di header dan sidebar"
-                />
-
-                <Form
-                    action="/settings/profile/logo"
-                    method="post"
-                    enctype="multipart/form-data"
-                    class="space-y-4"
-                    v-slot="{ processing }"
-                >
-                    <div class="grid gap-2">
-                        <Label for="logo">Pilih file logo</Label>
-                        <Input id="logo" name="logo" type="file" accept="image/*" />
-                    </div>
-                    <div v-if="appLogoUrl" class="grid gap-2">
-                        <Label>Pratinjau saat ini</Label>
-                        <img :src="appLogoUrl" alt="Logo saat ini" class="h-12 w-auto object-contain border rounded-md p-2" />
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <Button :disabled="processing">Simpan Logo</Button>
-                    </div>
-                </Form>
-            </div>
+            <!-- Logo settings dipindahkan ke halaman Settings/Logo -->
         </SettingsLayout>
     </AppLayout>
 </template>

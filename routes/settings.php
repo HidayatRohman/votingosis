@@ -25,6 +25,19 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('settings/Appearance');
     })->name('appearance.edit');
 
+    // Branding: Logo & Favicon pages
+    Route::get('settings/logo', function () {
+        return Inertia::render('settings/Logo');
+    })->name('logo.edit');
+
+    Route::post('settings/logo', [BrandingController::class, 'updateLogo'])->name('logo.update');
+
+    Route::get('settings/favicon', function () {
+        return Inertia::render('settings/Favicon');
+    })->name('favicon.edit');
+
+    Route::post('settings/favicon', [BrandingController::class, 'updateFavicon'])->name('favicon.update');
+
     Route::get('settings/two-factor', [TwoFactorAuthenticationController::class, 'show'])
         ->name('two-factor.show');
 });

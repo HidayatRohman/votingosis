@@ -71,9 +71,13 @@ const submitCreate = () => {
         <!-- Modal Tambah Data Voting -->
         <Dialog v-model:open="createOpen">
           <DialogContent class="sm:max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>Tambah Data Voting</DialogTitle>
-              <DialogDescription>Isi form kandidat OSIS dengan lengkap.</DialogDescription>
+            <DialogHeader class="p-0">
+              <div
+                class="rounded-t-lg -mx-6 -mt-6 px-6 pt-6 pb-4 border-b border-sidebar-border/60 bg-gradient-to-r from-sky-100 via-indigo-100 to-fuchsia-100 dark:from-sky-900/40 dark:via-indigo-900/40 dark:to-fuchsia-900/40"
+              >
+                <DialogTitle class="text-lg md:text-xl font-semibold">Tambah Data Voting</DialogTitle>
+                <DialogDescription class="mt-1 text-sm text-neutral-700 dark:text-neutral-300">Isi form kandidat OSIS dengan lengkap.</DialogDescription>
+              </div>
             </DialogHeader>
             <div class="py-2">
               <VotingForm :form="form" :on-submit="submitCreate" variant="plain" :show-actions="false" />

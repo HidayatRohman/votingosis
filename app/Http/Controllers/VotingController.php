@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Voting;
 use App\Models\Vote;
+use App\Models\Setting;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -119,9 +121,21 @@ class VotingController extends Controller
             $hasVoted = Vote::query()->where('user_id', Auth::id())->exists();
         }
 
+        // Tentukan apakah voting sedang dibuka berdasarkan jadwal
+        $startAt = Setting::get('voting_start_at');
+        $endAt = Setting::get('voting_end_at');
+        $isVotingOpen = false;
+        if ($startAt && $endAt) {
+            $start = Carbon::parse($startAt);
+            $end = Carbon::parse($endAt);
+            $now = Carbon::now();
+            $isVotingOpen = $now->between($start, $end, true);
+        }
+
         return Inertia::render('candidates/Index', [
             'items' => $items,
             'hasVoted' => $hasVoted,
+            'isVotingOpen' => $isVotingOpen,
         ]);
     }
 
@@ -130,6 +144,20 @@ class VotingController extends Controller
         $userId = Auth::id();
         if (!$userId) {
             return redirect()->back()->with('error', 'Unauthenticated');
+        }
+
+        // Cegah voting di luar jadwal
+        $startAt = Setting::get('voting_start_at');
+        $endAt = Setting::get('voting_end_at');
+        $isVotingOpen = false;
+        if ($startAt && $endAt) {
+            $start = Carbon::parse($startAt);
+            $end = Carbon::parse($endAt);
+            $now = Carbon::now();
+            $isVotingOpen = $now->between($start, $end, true);
+        }
+        if (!$isVotingOpen) {
+            return redirect()->back()->with('status', 'voting_closed');
         }
 
         // Cek apakah user sudah pernah vote

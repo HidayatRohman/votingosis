@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { ref } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 
-const props = defineProps<{ items: any[]; hasVoted: boolean }>();
+const props = defineProps<{ items: any[]; hasVoted: boolean; isVotingOpen: boolean }>();
 
 const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
 
@@ -90,7 +90,7 @@ const openDetail = (item: any) => {
               </div>
               <div class="pt-3 flex justify-center gap-2">
                 <Button size="sm" variant="outline" @click="openDetail(item)">Detail</Button>
-                <Button size="sm" :disabled="props.hasVoted" @click="submitVote(item.id)">
+                <Button v-if="props.isVotingOpen" size="sm" :disabled="props.hasVoted" @click="submitVote(item.id)">
                   {{ props.hasVoted ? 'Sudah vote' : 'Vote' }}
                 </Button>
               </div>
@@ -155,7 +155,7 @@ const openDetail = (item: any) => {
               </div>
 
               <!-- Tombol Vote di bawah -->
-              <div class="mt-6 flex justify-center">
+              <div v-if="props.isVotingOpen" class="mt-6 flex justify-center">
                 <Button :disabled="props.hasVoted || !selectedItem" @click="selectedItem && submitVote(selectedItem.id)">
                   {{ props.hasVoted ? 'Sudah vote' : 'Vote' }}
                 </Button>

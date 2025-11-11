@@ -2,8 +2,9 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
+import type { AppPageProps } from '@/types';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
@@ -14,7 +15,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const props = defineProps<{ stats?: { items: { id: number; nama: string; votes_count: number; nip?: string; kelas?: string; jurusan?: string; foto?: string }[]; totalVotes: number }, hasVoted?: boolean }>();
+const props = defineProps<{ stats?: { items: { id: number; nama: string; votes_count: number; nip?: string; kelas?: string; jurusan?: string; foto?: string }[]; totalVotes: number }, hasVoted?: boolean, isVotingOpen?: boolean }>();
 
 const percent = (count: number) => {
     const total = props.stats?.totalVotes ?? 0;
@@ -55,6 +56,47 @@ const gradientStyle = computed(() => {
 });
 
 const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
+
+// Countdown logic using shared votingSchedule
+const page = usePage<AppPageProps>();
+const schedule = computed(() => page.props.votingSchedule ?? { startAt: null, endAt: null });
+const nowMs = ref(Date.now());
+let timer: number | null = null;
+onMounted(() => {
+  timer = window.setInterval(() => {
+    nowMs.value = Date.now();
+  }, 1000);
+});
+onUnmounted(() => {
+  if (timer) window.clearInterval(timer);
+});
+
+const timeTo = (target: string | null) => {
+  if (!target) return null;
+  const targetMs = new Date(target.replace(' ', 'T')).getTime();
+  const diff = targetMs - nowMs.value;
+  if (isNaN(targetMs)) return null;
+  const sign = diff >= 0 ? 1 : -1;
+  const abs = Math.abs(diff);
+  const days = Math.floor(abs / (24 * 60 * 60 * 1000));
+  const hours = Math.floor((abs % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+  const minutes = Math.floor((abs % (60 * 60 * 1000)) / (60 * 1000));
+  const seconds = Math.floor((abs % (60 * 1000)) / 1000);
+  return { sign, days, hours, minutes, seconds };
+};
+
+const countdownState = computed(() => {
+  const start = schedule.value.startAt;
+  const end = schedule.value.endAt;
+  if (!start || !end) return { state: 'unscheduled' as const };
+  const now = nowMs.value;
+  const startMs = new Date(start.replace(' ', 'T')).getTime();
+  const endMs = new Date(end.replace(' ', 'T')).getTime();
+  if (isNaN(startMs) || isNaN(endMs)) return { state: 'unscheduled' as const };
+  if (now < startMs) return { state: 'before', remain: timeTo(start) };
+  if (now > endMs) return { state: 'after' };
+  return { state: 'during', remain: timeTo(end) };
+});
 </script>
 
 <template>
@@ -79,6 +121,35 @@ const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
                         <div v-if="(props.stats?.items?.length ?? 0) === 0" class="text-sm text-muted-foreground">Belum ada data voting.</div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Countdown Voting di antara pie dan daftar kandidat -->
+            <div class="rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4">
+                <h2 class="text-lg font-semibold mb-2">Countdown Voting</h2>
+                <template v-if="countdownState.state === 'unscheduled'">
+                    <p class="text-sm text-muted-foreground">Jadwal voting belum diatur.</p>
+                </template>
+                <template v-else-if="countdownState.state === 'before'">
+                    <p class="text-sm">Voting mulai dalam:</p>
+                    <p class="mt-1 text-xl font-semibold">
+                      {{ countdownState.remain?.days }} hari
+                      {{ countdownState.remain?.hours }} jam
+                      {{ countdownState.remain?.minutes }} menit
+                      {{ countdownState.remain?.seconds }} detik
+                    </p>
+                </template>
+                <template v-else-if="countdownState.state === 'during'">
+                    <p class="text-sm">Voting berakhir dalam:</p>
+                    <p class="mt-1 text-xl font-semibold">
+                      {{ countdownState.remain?.days }} hari
+                      {{ countdownState.remain?.hours }} jam
+                      {{ countdownState.remain?.minutes }} menit
+                      {{ countdownState.remain?.seconds }} detik
+                    </p>
+                </template>
+                <template v-else>
+                    <p class="text-sm text-muted-foreground">Voting telah berakhir.</p>
+                </template>
             </div>
 
             <!-- Kartu daftar kandidat di bawah pie chart -->
@@ -115,7 +186,7 @@ const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
                       <div class="pt-3 flex justify-center">
                         <span class="text-sm font-medium">Total Suara: {{ item.votes_count }}</span>
                       </div>
-                      <div v-if="!props.hasVoted" class="pt-3 flex justify-center">
+                      <div v-if="props.isVotingOpen && !props.hasVoted" class="pt-3 flex justify-center">
                         <Button as-child>
                           <Link href="/candidates">Voting Sekarang</Link>
                         </Button>

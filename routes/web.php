@@ -30,12 +30,24 @@ Route::get('dashboard', function () {
         $hasVoted = \App\Models\Vote::query()->where('user_id', \Illuminate\Support\Facades\Auth::id())->exists();
     }
 
+    // Hitung status voting berdasarkan jadwal
+    $startAt = \App\Models\Setting::get('voting_start_at');
+    $endAt = \App\Models\Setting::get('voting_end_at');
+    $isVotingOpen = false;
+    if ($startAt && $endAt) {
+        $start = \Illuminate\Support\Carbon::parse($startAt);
+        $end = \Illuminate\Support\Carbon::parse($endAt);
+        $now = \Illuminate\Support\Carbon::now();
+        $isVotingOpen = $now->between($start, $end, true);
+    }
+
     return Inertia::render('Dashboard', [
         'stats' => [
             'items' => $items,
             'totalVotes' => $totalVotes,
         ],
         'hasVoted' => $hasVoted,
+        'isVotingOpen' => $isVotingOpen,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 

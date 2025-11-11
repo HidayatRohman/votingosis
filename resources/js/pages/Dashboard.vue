@@ -218,15 +218,16 @@ const winnerItem = computed(() => {
                       <div class="pt-3 flex justify-center">
                         <span class="text-sm font-medium">Total Suara: {{ item.votes_count }}</span>
                       </div>
-                      <div v-if="props.isVotingOpen && !props.hasVoted" class="pt-3 flex justify-center">
-                        <Button as-child>
-                          <Link href="/candidates">Voting Sekarang</Link>
-                        </Button>
-                      </div>
+                      
                     </CardContent>
                   </Card>
                 </div>
                 <div v-if="(props.stats?.items?.length ?? 0) === 0" class="mt-2 text-sm text-muted-foreground">Belum ada kandidat.</div>
+                <div v-if="props.isVotingOpen && !props.hasVoted" class="mt-4 flex justify-center">
+                  <Button as-child>
+                    <Link href="/candidates">Voting Sekarang</Link>
+                  </Button>
+                </div>
             </div>
         </div>
     </AppLayout>

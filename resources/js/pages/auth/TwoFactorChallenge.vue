@@ -8,7 +8,8 @@ import {
     PinInputSlot,
 } from '@/components/ui/pin-input';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import { store } from '@/routes/two-factor/login';
+import twoFactor from '@/lib/routes/two-factor';
+const { store } = twoFactor;
 import { Form, Head } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 

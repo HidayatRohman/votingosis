@@ -9,7 +9,8 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { useTwoFactorAuth } from '@/composables/useTwoFactorAuth';
-import { regenerateRecoveryCodes } from '@/routes/two-factor';
+import twoFactor from '@/lib/routes/two-factor';
+const { regenerateRecoveryCodes } = twoFactor;
 import { Form } from '@inertiajs/vue3';
 import { Eye, EyeOff, LockKeyhole, RefreshCw } from 'lucide-vue-next';
 import { nextTick, onMounted, ref, useTemplateRef } from 'vue';

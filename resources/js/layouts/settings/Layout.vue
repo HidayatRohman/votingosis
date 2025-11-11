@@ -7,7 +7,7 @@ import { edit as editAppearance } from '@/routes/appearance';
 import { edit as editLogo } from '@/routes/logo';
 import { edit as editFavicon } from '@/routes/favicon';
 import { edit as editProfile } from '@/routes/profile';
-import { show } from '@/routes/two-factor';
+import { show } from '@/lib/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { edit as editCountdown } from '@/routes/countdown';
 import { type NavItem } from '@/types';

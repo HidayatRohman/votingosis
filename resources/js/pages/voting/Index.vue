@@ -90,20 +90,18 @@ const submitEdit = () => {
 
         <!-- Hero Header dengan background -->
         <div
-          class="relative overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border mb-4"
+          class="relative overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border mb-4 bg-gradient-to-r from-sky-600 to-indigo-600 text-white"
         >
-          <div
-            class="absolute inset-0 opacity-25"
-            :style="{ background: 'radial-gradient(circle at 20% 20%, #93c5fd33, transparent 35%), radial-gradient(circle at 80% 0%, #60a5fa33, transparent 30%), linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #1d4ed8 100%)' }"
-          />
-          <div class="relative p-6 md:p-8 flex items-center justify-between">
+          <div class="relative p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 class="text-2xl md:text-3xl font-bold">Data Voting</h1>
-              <p class="mt-1 text-sm md:text-base text-neutral-700 dark:text-neutral-300">
+              <h1 class="text-xl md:text-2xl font-bold">Data Voting</h1>
+              <p class="mt-1 text-xs md:text-sm text-white/90">
                 Kelola kandidat OSIS. Tambahkan, edit, dan hapus data dengan mudah.
               </p>
             </div>
-            <Button variant="outline" class="bg-white/70 backdrop-blur-sm dark:bg-neutral-800/60" @click="createOpen = true">Tambah</Button>
+            <div class="mt-3 md:mt-0">
+              <Button variant="outline" class="bg-white/70 backdrop-blur-sm dark:bg-neutral-800/60" @click="createOpen = true">Tambah</Button>
+            </div>
           </div>
         </div>
 

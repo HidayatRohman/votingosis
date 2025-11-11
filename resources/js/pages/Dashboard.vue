@@ -211,15 +211,15 @@ const winnerItem = computed(() => {
                 </template>
                 <template v-else>
                     <div v-if="winnerItem" class="mt-3">
-                      <Card class="overflow-hidden">
-                        <CardHeader class="p-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white flex items-center justify-between">
+                      <Card class="relative overflow-hidden">
+                        <CardHeader class="relative z-10 overflow-hidden p-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white flex items-center justify-between">
                           <h3 class="text-sm md:text-base">Pemenang</h3>
                           <Badge class="bg-amber-500 text-amber-900 border-transparent">
-                            <Trophy />
+                            <Trophy class="trophy-pulse" />
                             Juara
                           </Badge>
                         </CardHeader>
-                        <CardContent class="p-4 flex flex-col md:flex-row items-center md:items-start gap-4">
+                        <CardContent class="relative z-10 p-4 flex flex-col md:flex-row items-center md:items-start gap-4">
                           <img
                             v-if="winnerItem.foto"
                             :src="photoUrl(winnerItem.foto)"
@@ -232,6 +232,21 @@ const winnerItem = computed(() => {
                             <div class="text-sm md:text-xs text-muted-foreground">Total Suara: {{ winnerItem.votes_count }}</div>
                           </div>
                         </CardContent>
+                        <!-- Confetti celebration overlay across entire card -->
+                        <div class="confetti-overlay pointer-events-none absolute inset-0">
+                          <span class="confetti-piece" style="left:5%; background:#f59e0b; animation-delay:0s; width:6px; height:10px"></span>
+                          <span class="confetti-piece" style="left:12%; background:#3b82f6; animation-delay:0.2s; width:5px; height:8px"></span>
+                          <span class="confetti-piece" style="left:20%; background:#6366f1; animation-delay:0.45s; width:6px; height:10px"></span>
+                          <span class="confetti-piece" style="left:28%; background:#06b6d4; animation-delay:0.7s; width:4px; height:7px"></span>
+                          <span class="confetti-piece" style="left:36%; background:#22c55e; animation-delay:0.95s; width:6px; height:10px"></span>
+                          <span class="confetti-piece" style="left:44%; background:#ef4444; animation-delay:1.2s; width:5px; height:9px"></span>
+                          <span class="confetti-piece" style="left:52%; background:#a855f7; animation-delay:1.45s; width:6px; height:10px"></span>
+                          <span class="confetti-piece" style="left:60%; background:#ec4899; animation-delay:1.7s; width:4px; height:7px"></span>
+                          <span class="confetti-piece" style="left:68%; background:#3b82f6; animation-delay:1.95s; width:5px; height:9px"></span>
+                          <span class="confetti-piece" style="left:76%; background:#f59e0b; animation-delay:2.2s; width:6px; height:10px"></span>
+                          <span class="confetti-piece" style="left:84%; background:#22c55e; animation-delay:2.45s; width:5px; height:8px"></span>
+                          <span class="confetti-piece" style="left:92%; background:#ef4444; animation-delay:2.7s; width:4px; height:7px"></span>
+                        </div>
                       </Card>
                     </div>
                     <div v-else class="mt-1 text-sm text-muted-foreground">Belum ada suara yang masuk.</div>
@@ -287,3 +302,27 @@ const winnerItem = computed(() => {
         </div>
     </AppLayout>
 </template>
+
+<style scoped>
+@keyframes confettiFall {
+  0% { top: -16px; transform: rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { top: calc(100% - 12px); transform: rotate(360deg); opacity: 0; }
+}
+.confetti-overlay { z-index: 0; }
+.confetti-piece {
+  position: absolute;
+  top: -12px;
+  border-radius: 2px;
+  opacity: 0.9;
+  animation: confettiFall 2.5s ease-in-out infinite;
+}
+
+@keyframes trophyPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12) rotate(1deg); }
+}
+.trophy-pulse {
+  animation: trophyPulse 2s ease-in-out infinite;
+}
+</style>

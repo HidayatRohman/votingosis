@@ -17,7 +17,8 @@ withDefaults(defineProps<Props>(), {
 <template>
     <AppShell variant="sidebar">
         <AppSidebar />
-        <AppContent variant="sidebar" class="overflow-x-hidden">
+        <!-- Jadikan konten sebagai kontainer scroll agar header sticky bekerja di mobile -->
+        <AppContent variant="sidebar" class="overflow-x-hidden overflow-y-auto min-h-svh">
             <AppSidebarHeader :breadcrumbs="breadcrumbs" />
             <slot />
         </AppContent>

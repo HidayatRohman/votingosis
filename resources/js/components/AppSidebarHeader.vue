@@ -25,10 +25,10 @@ const appLogoUrl = computed(() => page.props.appLogoUrl as string | null);
 <template>
     <header
         :class="[
-            'relative flex h-16 shrink-0 items-center gap-2 px-6 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 md:px-4',
+            'sticky top-0 z-40 relative flex h-16 shrink-0 items-center gap-2 px-6 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 md:px-4',
             isDashboard
                 ? 'bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 text-white shadow-sm border-none'
-                : 'border-b border-sidebar-border/70'
+                : 'border-b border-sidebar-border/70 bg-background'
         ]"
     >
         <div class="flex items-center gap-2">

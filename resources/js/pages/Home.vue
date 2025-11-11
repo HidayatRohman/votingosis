@@ -24,7 +24,7 @@ const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
   <Head title="E-Voting" />
   <div class="flex min-h-screen flex-col bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 text-white">
     <!-- Header -->
-    <header class="w-full">
+    <header class="sticky top-0 z-50 w-full">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         <div class="flex items-center gap-2">
           <!-- Tampilkan logo unggahan tanpa background jika tersedia -->

@@ -41,6 +41,45 @@ const submitCreate = () => {
     preserveScroll: true,
   } as any);
 };
+
+// Edit dialog state & form
+const editOpen = ref(false);
+const editingItem = ref<any | null>(null);
+const editForm = useForm({
+  nis: '',
+  nama: '',
+  kelas: '',
+  jurusan: '',
+  foto: null as any,
+  visi: '',
+  misi: '',
+});
+
+const openEdit = (item: any) => {
+  editingItem.value = item;
+  editForm.nis = item.nip ?? '';
+  editForm.nama = item.nama ?? '';
+  editForm.kelas = item.kelas ?? '';
+  editForm.jurusan = item.jurusan ?? '';
+  editForm.visi = item.visi ?? '';
+  editForm.misi = item.misi ?? '';
+  editForm.foto = null as any;
+  editOpen.value = true;
+};
+
+const submitEdit = () => {
+  if (!editingItem.value) return;
+  editForm
+    .transform((data: any) => ({ ...data, _method: 'put' }))
+    .post(`/voting/${editingItem.value.id}`, {
+      forceFormData: true,
+      preserveScroll: true,
+      onSuccess: () => {
+        editOpen.value = false;
+        editForm.reset('foto');
+      },
+    } as any);
+};
 </script>
 
 <template>
@@ -91,6 +130,29 @@ const submitCreate = () => {
           </DialogContent>
         </Dialog>
 
+        <!-- Modal Edit Data Voting -->
+        <Dialog v-model:open="editOpen">
+          <DialogContent class="sm:max-w-2xl">
+            <DialogHeader class="p-0">
+              <div
+                class="rounded-t-lg -mx-6 -mt-6 px-6 pt-6 pb-4 border-b border-sidebar-border/60 bg-gradient-to-r from-sky-100 via-indigo-100 to-fuchsia-100 dark:from-sky-900/40 dark:via-indigo-900/40 dark:to-fuchsia-900/40"
+              >
+                <DialogTitle class="text-lg md:text-xl font-semibold">Edit Data Voting</DialogTitle>
+                <DialogDescription class="mt-1 text-sm text-neutral-700 dark:text-neutral-300">Perbarui data kandidat OSIS.</DialogDescription>
+              </div>
+            </DialogHeader>
+            <div class="py-2">
+              <VotingForm :form="editForm" :on-submit="submitEdit" variant="plain" :show-actions="false" :editing-item="editingItem" />
+            </div>
+            <DialogFooter>
+              <div class="flex w-full justify-end gap-2">
+                <Button variant="ghost" @click="editOpen = false">Batal</Button>
+                <Button variant="default" @click="submitEdit">Simpan</Button>
+              </div>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
         <Card class="mt-4">
           <CardHeader>
             <CardTitle>Daftar Kandidat</CardTitle>
@@ -114,9 +176,7 @@ const submitCreate = () => {
                   <div v-else class="h-40 w-full bg-muted" />
                   <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div class="absolute top-2 right-2 flex gap-2">
-                    <Link :href="`/voting/${item.id}/edit`">
-                      <Button size="sm" variant="outline">Edit</Button>
-                    </Link>
+                    <Button size="sm" variant="outline" @click="openEdit(item)">Edit</Button>
                     <Button size="sm" variant="destructive" @click="destroyItem(item.id)">Hapus</Button>
                   </div>
                 </CardHeader>

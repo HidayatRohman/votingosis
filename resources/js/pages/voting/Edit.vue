@@ -19,13 +19,14 @@ const form = useForm({
 });
 
 const submit = () => {
-  form.post(`/voting/${props.item.id}`, {
-    forceFormData: true,
-    onFinish: () => form.reset('foto'),
-    preserveScroll: true,
-    data: form.data(),
-    _method: 'put',
-  } as any);
+  // Gunakan POST + method override via transform agar multipart menyertakan _method
+  form
+    .transform((data: any) => ({ ...data, _method: 'put' }))
+    .post(`/voting/${props.item.id}`, {
+      forceFormData: true,
+      onFinish: () => form.reset('foto'),
+      preserveScroll: true,
+    } as any);
 };
 </script>
 

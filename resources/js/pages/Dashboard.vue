@@ -219,17 +219,17 @@ const winnerItem = computed(() => {
                             Juara
                           </Badge>
                         </CardHeader>
-                        <CardContent class="relative z-10 p-4 flex flex-col md:flex-row items-center md:items-start gap-4">
+                        <CardContent class="relative z-10 p-4 flex flex-col items-center gap-4">
                           <img
                             v-if="winnerItem.foto"
                             :src="photoUrl(winnerItem.foto)"
                             alt="Foto Pemenang"
-                            class="w-full h-40 object-contain md:object-cover rounded bg-muted md:bg-transparent md:h-16 md:w-16"
+                            class="w-full h-64 md:h-72 object-contain rounded bg-muted"
                           />
-                          <div v-else class="w-full h-40 bg-muted rounded md:h-16 md:w-16" />
-                          <div class="w-full md:flex-1 text-center md:text-left">
-                            <div class="text-base md:text-sm font-semibold">{{ winnerItem.nama }}</div>
-                            <div class="text-sm md:text-xs text-muted-foreground">Total Suara: {{ winnerItem.votes_count }}</div>
+                          <div v-else class="w-full h-64 md:h-72 bg-muted rounded" />
+                          <div class="w-full text-center">
+                            <div class="text-base font-semibold">{{ winnerItem.nama }}</div>
+                            <div class="text-sm text-muted-foreground">Total Suara: {{ winnerItem.votes_count }}</div>
                           </div>
                         </CardContent>
                         <!-- Confetti celebration overlay across entire card -->

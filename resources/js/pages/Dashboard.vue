@@ -98,6 +98,9 @@ const countdownState = computed(() => {
   return { state: 'during', remain: timeTo(end) };
 });
 
+// Format helper untuk dua digit
+const pad2 = (n: number) => String(n ?? 0).padStart(2, '0');
+
 // Hitung pemenang (kandidat dengan suara terbanyak) setelah voting berakhir
 const winnerItem = computed(() => {
   const items = props.stats?.items ?? [];
@@ -135,31 +138,76 @@ const winnerItem = computed(() => {
             </div>
 
             <!-- Countdown Voting di antara pie dan daftar kandidat -->
-            <div class="rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4">
-                <h2 class="text-lg font-semibold mb-2">Countdown Voting</h2>
+            <div class="rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-0 overflow-hidden">
+              <!-- Header yang menarik dan rata tengah -->
+              <div class="px-4 py-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white text-center">
+                <h2 class="text-base md:text-lg font-semibold">Countdown Voting</h2>
+                <p v-if="countdownState.state === 'before'" class="mt-1 text-xs md:text-sm text-white/90">Voting mulai dalam:</p>
+                <p v-else-if="countdownState.state === 'during'" class="mt-1 text-xs md:text-sm text-white/90">Voting berakhir dalam:</p>
+                <p v-else-if="countdownState.state === 'unscheduled'" class="mt-1 text-xs md:text-sm text-white/90">Jadwal voting belum diatur</p>
+                <p v-else class="mt-1 text-xs md:text-sm text-white/90">Voting telah berakhir</p>
+              </div>
+              <div class="p-4">
                 <template v-if="countdownState.state === 'unscheduled'">
-                    <p class="text-sm text-muted-foreground">Jadwal voting belum diatur.</p>
+                  <p class="text-sm text-muted-foreground text-center">Silakan atur jadwal di Settings → Countdown.</p>
                 </template>
                 <template v-else-if="countdownState.state === 'before'">
-                    <p class="text-sm">Voting mulai dalam:</p>
-                    <p class="mt-1 text-xl font-semibold">
-                      {{ countdownState.remain?.days }} hari
-                      {{ countdownState.remain?.hours }} jam
-                      {{ countdownState.remain?.minutes }} menit
-                      {{ countdownState.remain?.seconds }} detik
-                    </p>
+                  <div class="mt-1 flex flex-wrap justify-center gap-4">
+                    <div class="flex flex-col items-center">
+                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-sky-500 flex items-center justify-center">
+                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.days ?? 0) }}</span>
+                      </div>
+                      <span class="mt-2 text-xs text-muted-foreground">Hari</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-indigo-500 flex items-center justify-center">
+                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.hours ?? 0) }}</span>
+                      </div>
+                      <span class="mt-2 text-xs text-muted-foreground">Jam</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-fuchsia-500 flex items-center justify-center">
+                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.minutes ?? 0) }}</span>
+                      </div>
+                      <span class="mt-2 text-xs text-muted-foreground">Menit</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-cyan-500 flex items-center justify-center">
+                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.seconds ?? 0) }}</span>
+                      </div>
+                      <span class="mt-2 text-xs text-muted-foreground">Detik</span>
+                    </div>
+                  </div>
                 </template>
                 <template v-else-if="countdownState.state === 'during'">
-                    <p class="text-sm">Voting berakhir dalam:</p>
-                    <p class="mt-1 text-xl font-semibold">
-                      {{ countdownState.remain?.days }} hari
-                      {{ countdownState.remain?.hours }} jam
-                      {{ countdownState.remain?.minutes }} menit
-                      {{ countdownState.remain?.seconds }} detik
-                    </p>
+                  <div class="mt-1 flex flex-wrap justify-center gap-4">
+                    <div class="flex flex-col items-center">
+                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-sky-500 flex items-center justify-center">
+                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.days ?? 0) }}</span>
+                      </div>
+                      <span class="mt-2 text-xs text-muted-foreground">Hari</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-indigo-500 flex items-center justify-center">
+                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.hours ?? 0) }}</span>
+                      </div>
+                      <span class="mt-2 text-xs text-muted-foreground">Jam</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-fuchsia-500 flex items-center justify-center">
+                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.minutes ?? 0) }}</span>
+                      </div>
+                      <span class="mt-2 text-xs text-muted-foreground">Menit</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-cyan-500 flex items-center justify-center">
+                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.seconds ?? 0) }}</span>
+                      </div>
+                      <span class="mt-2 text-xs text-muted-foreground">Detik</span>
+                    </div>
+                  </div>
                 </template>
                 <template v-else>
-                    <p class="text-sm text-muted-foreground">Voting telah berakhir.</p>
                     <div v-if="winnerItem" class="mt-3">
                       <Card class="overflow-hidden">
                         <CardHeader class="p-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white">
@@ -182,6 +230,7 @@ const winnerItem = computed(() => {
                     </div>
                     <div v-else class="mt-1 text-sm text-muted-foreground">Belum ada suara yang masuk.</div>
                 </template>
+              </div>
             </div>
 
             <!-- Kartu daftar kandidat di bawah pie chart -->

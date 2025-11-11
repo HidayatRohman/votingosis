@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Models\Vote;
 use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,5 +29,16 @@ class VotingScheduleController extends Controller
         Setting::set('voting_end_at', $end->toDateTimeString());
 
         return back()->with('status', 'Voting schedule updated successfully.');
+    }
+
+    /**
+     * Reset all voting results and allow users to vote again.
+     */
+    public function reset(Request $request): RedirectResponse
+    {
+        // Hapus seluruh data vote agar hasil kembali 0 dan user bisa vote lagi
+        Vote::query()->delete();
+
+        return back()->with('status', 'Voting telah di-reset. Semua pengguna dapat vote kembali.');
     }
 }

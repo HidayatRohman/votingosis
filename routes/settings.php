@@ -49,4 +49,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::put('settings/countdown', [VotingScheduleController::class, 'update'])
         ->name('countdown.update');
+
+    // Reset voting results and allow re-voting
+    Route::post('settings/reset-voting', [VotingScheduleController::class, 'reset'])
+        ->name('voting.reset');
 });

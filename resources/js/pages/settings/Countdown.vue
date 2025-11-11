@@ -30,6 +30,9 @@ const form = useForm({
   voting_end_at: toDateTimeLocal(schedule.endAt),
 });
 
+// Form untuk reset voting
+const resetForm = useForm({});
+
 const startRef = ref<HTMLInputElement | null>(null);
 const endRef = ref<HTMLInputElement | null>(null);
 
@@ -55,6 +58,18 @@ function openEndPicker() {
 function submit() {
   form.post(update.form.put().action, {
     onSuccess: () => {},
+  });
+}
+
+function resetVoting() {
+  if (!confirm('Reset voting? Semua hasil akan dihapus dan semua user bisa vote lagi.')) {
+    return;
+  }
+  resetForm.post('/settings/reset-voting', {
+    preserveScroll: true,
+    onSuccess: () => {
+      // opsional: bisa tambahkan feedback lain jika diperlukan
+    },
   });
 }
 </script>
@@ -131,6 +146,9 @@ function submit() {
               <Button :disabled="form.processing" @click="submit">Simpan</Button>
               <Button variant="outline" as-child>
                 <Link :href="edit().url">Batal</Link>
+              </Button>
+              <Button variant="destructive" :disabled="resetForm.processing" @click="resetVoting">
+                Reset Voting
               </Button>
             </div>
           </div>

@@ -5,6 +5,8 @@ import AppSidebarHeader from '@/components/AppSidebarHeader.vue';
 import AppContent from '@/components/AppContent.vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { ref } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 
 const props = defineProps<{ items: any[]; hasVoted: boolean }>();
@@ -13,6 +15,14 @@ const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
 
 const submitVote = (id: number) => {
   router.post(`/vote/${id}`);
+};
+
+// Dialog detail kandidat
+const detailOpen = ref(false);
+const selectedItem = ref<any | null>(null);
+const openDetail = (item: any) => {
+  selectedItem.value = item;
+  detailOpen.value = true;
 };
 </script>
 
@@ -78,7 +88,8 @@ const submitVote = (id: number) => {
                 <span class="font-medium">Jurusan</span>
                 <span class="col-span-2">{{ item.jurusan }}</span>
               </div>
-              <div class="pt-3 flex justify-center">
+              <div class="pt-3 flex justify-center gap-2">
+                <Button size="sm" variant="outline" @click="openDetail(item)">Detail</Button>
                 <Button size="sm" :disabled="props.hasVoted" @click="submitVote(item.id)">
                   {{ props.hasVoted ? 'Sudah vote' : 'Vote' }}
                 </Button>
@@ -86,6 +97,72 @@ const submitVote = (id: number) => {
             </CardContent>
           </Card>
         </div>
+        
+        <!-- Dialog Detail Kandidat -->
+        <Dialog v-model:open="detailOpen">
+          <DialogContent class="sm:max-w-2xl">
+            <DialogHeader class="p-0">
+              <div class="rounded-t-lg -mx-6 -mt-6 px-6 pt-6 pb-4 border-b border-sidebar-border/60 bg-gradient-to-r from-sky-100 via-indigo-100 to-fuchsia-100 dark:from-sky-900/40 dark:via-indigo-900/40 dark:to-fuchsia-900/40">
+                <DialogTitle class="text-lg md:text-xl font-semibold">Detail Kandidat</DialogTitle>
+                <DialogDescription class="mt-1 text-sm text-neutral-700 dark:text-neutral-300">Informasi lengkap kandidat yang dipilih.</DialogDescription>
+              </div>
+            </DialogHeader>
+            <div class="py-2">
+              <!-- Susunan dua kolom: foto kiri full kolom, data kanan -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+                <div>
+                  <img v-if="selectedItem?.foto" :src="photoUrl(selectedItem?.foto)" alt="Foto Kandidat" class="w-full h-64 object-cover rounded" />
+                  <div v-else class="w-full h-64 bg-muted rounded" />
+                </div>
+                <div class="grid gap-2 text-sm">
+                  <div class="grid grid-cols-3">
+                    <span class="font-medium">NIS</span>
+                    <span class="col-span-2">{{ selectedItem?.nip }}</span>
+                  </div>
+                  <div class="grid grid-cols-3">
+                    <span class="font-medium">Nama</span>
+                    <span class="col-span-2">{{ selectedItem?.nama }}</span>
+                  </div>
+                  <div class="grid grid-cols-3">
+                    <span class="font-medium">Kelas</span>
+                    <span class="col-span-2">{{ selectedItem?.kelas }}</span>
+                  </div>
+                  <div class="grid grid-cols-3">
+                    <span class="font-medium">Jurusan</span>
+                    <span class="col-span-2">{{ selectedItem?.jurusan }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Visi dan Misi dua kolom di bagian bawah, masing-masing dalam kartu dengan header biru -->
+              <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card class="overflow-hidden">
+                  <CardHeader class="p-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white">
+                    <CardTitle class="text-sm md:text-base">Visi</CardTitle>
+                  </CardHeader>
+                  <CardContent class="p-4">
+                    <p class="text-sm text-muted-foreground whitespace-pre-line">{{ selectedItem?.visi || '-' }}</p>
+                  </CardContent>
+                </Card>
+                <Card class="overflow-hidden">
+                  <CardHeader class="p-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white">
+                    <CardTitle class="text-sm md:text-base">Misi</CardTitle>
+                  </CardHeader>
+                  <CardContent class="p-4">
+                    <p class="text-sm text-muted-foreground whitespace-pre-line">{{ selectedItem?.misi || '-' }}</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <!-- Tombol Vote di bawah -->
+              <div class="mt-6 flex justify-center">
+                <Button :disabled="props.hasVoted || !selectedItem" @click="selectedItem && submitVote(selectedItem.id)">
+                  {{ props.hasVoted ? 'Sudah vote' : 'Vote' }}
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
     </AppContent>
   </AppShell>
 </template>

@@ -2,9 +2,10 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -13,7 +14,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const props = defineProps<{ stats?: { items: { id: number; nama: string; votes_count: number; nip?: string; kelas?: string; jurusan?: string; foto?: string }[]; totalVotes: number } }>();
+const props = defineProps<{ stats?: { items: { id: number; nama: string; votes_count: number; nip?: string; kelas?: string; jurusan?: string; foto?: string }[]; totalVotes: number }, hasVoted?: boolean }>();
 
 const percent = (count: number) => {
     const total = props.stats?.totalVotes ?? 0;
@@ -113,6 +114,11 @@ const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
                       </div>
                       <div class="pt-3 flex justify-center">
                         <span class="text-sm font-medium">Total Suara: {{ item.votes_count }}</span>
+                      </div>
+                      <div v-if="!props.hasVoted" class="pt-3 flex justify-center">
+                        <Button as-child>
+                          <Link href="/candidates">Voting Sekarang</Link>
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>

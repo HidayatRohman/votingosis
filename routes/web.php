@@ -25,12 +25,17 @@ Route::get('dashboard', function () {
         ->get();
 
     $totalVotes = (int) \App\Models\Vote::query()->count();
+    $hasVoted = false;
+    if (\Illuminate\Support\Facades\Auth::check()) {
+        $hasVoted = \App\Models\Vote::query()->where('user_id', \Illuminate\Support\Facades\Auth::id())->exists();
+    }
 
     return Inertia::render('Dashboard', [
         'stats' => [
             'items' => $items,
             'totalVotes' => $totalVotes,
         ],
+        'hasVoted' => $hasVoted,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 

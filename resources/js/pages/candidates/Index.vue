@@ -5,7 +5,7 @@ import AppSidebarHeader from '@/components/AppSidebarHeader.vue';
 import AppContent from '@/components/AppContent.vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogScrollContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ref } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 import type { BreadcrumbItem } from '@/types';
@@ -101,14 +101,14 @@ const openDetail = (item: any) => {
         
         <!-- Dialog Detail Kandidat -->
         <Dialog v-model:open="detailOpen">
-          <DialogContent class="sm:max-w-2xl">
+          <DialogScrollContent class="sm:max-w-2xl">
             <DialogHeader class="p-0">
-              <div class="rounded-t-lg -mx-6 -mt-6 px-6 pt-6 pb-4 border-b border-sidebar-border/60 bg-gradient-to-r from-sky-600 to-indigo-600 text-white">
+              <div class="rounded-t-lg -mt-2 md:-mt-4 px-4 md:px-6 pt-5 pb-4 border-b border-sidebar-border/60 bg-gradient-to-r from-sky-600 to-indigo-600 text-white">
                 <DialogTitle class="text-lg md:text-xl font-semibold">Detail Kandidat</DialogTitle>
                 <DialogDescription class="mt-1 text-sm text-white/90">Informasi lengkap kandidat yang dipilih.</DialogDescription>
               </div>
             </DialogHeader>
-            <div class="py-2">
+            <div class="py-2 max-h-[80vh] overflow-y-auto px-2 md:px-4">
               <!-- Susunan dua kolom: foto kiri full kolom, data kanan -->
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                 <div>
@@ -162,7 +162,7 @@ const openDetail = (item: any) => {
                 </Button>
               </div>
             </div>
-          </DialogContent>
+          </DialogScrollContent>
         </Dialog>
     </AppContent>
   </AppShell>

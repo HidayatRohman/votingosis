@@ -7,6 +7,8 @@ import { computed, onMounted, onUnmounted, ref } from 'vue';
 import type { AppPageProps } from '@/types';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Trophy } from 'lucide-vue-next';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -152,78 +154,82 @@ const winnerItem = computed(() => {
                   <p class="text-sm text-muted-foreground text-center">Silakan atur jadwal di Settings → Countdown.</p>
                 </template>
                 <template v-else-if="countdownState.state === 'before'">
-                  <div class="mt-1 flex flex-wrap justify-center gap-4">
+                  <div class="mt-1 flex flex-nowrap justify-center gap-3 md:gap-4">
                     <div class="flex flex-col items-center">
-                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-sky-500 flex items-center justify-center">
-                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.days ?? 0) }}</span>
+                      <div class="relative h-14 w-14 sm:h-16 sm:w-16 md:h-24 md:w-24 rounded-full border-2 border-dashed border-sky-500 flex items-center justify-center">
+                        <span class="text-xl sm:text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.days ?? 0) }}</span>
                       </div>
-                      <span class="mt-2 text-xs text-muted-foreground">Hari</span>
+                      <span class="mt-1 text-[10px] sm:text-xs text-muted-foreground">Hari</span>
                     </div>
                     <div class="flex flex-col items-center">
-                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-indigo-500 flex items-center justify-center">
-                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.hours ?? 0) }}</span>
+                      <div class="relative h-14 w-14 sm:h-16 sm:w-16 md:h-24 md:w-24 rounded-full border-2 border-dashed border-indigo-500 flex items-center justify-center">
+                        <span class="text-xl sm:text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.hours ?? 0) }}</span>
                       </div>
-                      <span class="mt-2 text-xs text-muted-foreground">Jam</span>
+                      <span class="mt-1 text-[10px] sm:text-xs text-muted-foreground">Jam</span>
                     </div>
                     <div class="flex flex-col items-center">
-                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-fuchsia-500 flex items-center justify-center">
-                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.minutes ?? 0) }}</span>
+                      <div class="relative h-14 w-14 sm:h-16 sm:w-16 md:h-24 md:w-24 rounded-full border-2 border-dashed border-fuchsia-500 flex items-center justify-center">
+                        <span class="text-xl sm:text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.minutes ?? 0) }}</span>
                       </div>
-                      <span class="mt-2 text-xs text-muted-foreground">Menit</span>
+                      <span class="mt-1 text-[10px] sm:text-xs text-muted-foreground">Menit</span>
                     </div>
                     <div class="flex flex-col items-center">
-                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-cyan-500 flex items-center justify-center">
-                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.seconds ?? 0) }}</span>
+                      <div class="relative h-14 w-14 sm:h-16 sm:w-16 md:h-24 md:w-24 rounded-full border-2 border-dashed border-cyan-500 flex items-center justify-center">
+                        <span class="text-xl sm:text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.seconds ?? 0) }}</span>
                       </div>
-                      <span class="mt-2 text-xs text-muted-foreground">Detik</span>
+                      <span class="mt-1 text-[10px] sm:text-xs text-muted-foreground">Detik</span>
                     </div>
                   </div>
                 </template>
                 <template v-else-if="countdownState.state === 'during'">
-                  <div class="mt-1 flex flex-wrap justify-center gap-4">
+                  <div class="mt-1 flex flex-nowrap justify-center gap-3 md:gap-4">
                     <div class="flex flex-col items-center">
-                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-sky-500 flex items-center justify-center">
-                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.days ?? 0) }}</span>
+                      <div class="relative h-14 w-14 sm:h-16 sm:w-16 md:h-24 md:w-24 rounded-full border-2 border-dashed border-sky-500 flex items-center justify-center">
+                        <span class="text-xl sm:text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.days ?? 0) }}</span>
                       </div>
-                      <span class="mt-2 text-xs text-muted-foreground">Hari</span>
+                      <span class="mt-1 text-[10px] sm:text-xs text-muted-foreground">Hari</span>
                     </div>
                     <div class="flex flex-col items-center">
-                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-indigo-500 flex items-center justify-center">
-                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.hours ?? 0) }}</span>
+                      <div class="relative h-14 w-14 sm:h-16 sm:w-16 md:h-24 md:w-24 rounded-full border-2 border-dashed border-indigo-500 flex items-center justify-center">
+                        <span class="text-xl sm:text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.hours ?? 0) }}</span>
                       </div>
-                      <span class="mt-2 text-xs text-muted-foreground">Jam</span>
+                      <span class="mt-1 text-[10px] sm:text-xs text-muted-foreground">Jam</span>
                     </div>
                     <div class="flex flex-col items-center">
-                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-fuchsia-500 flex items-center justify-center">
-                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.minutes ?? 0) }}</span>
+                      <div class="relative h-14 w-14 sm:h-16 sm:w-16 md:h-24 md:w-24 rounded-full border-2 border-dashed border-fuchsia-500 flex items-center justify-center">
+                        <span class="text-xl sm:text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.minutes ?? 0) }}</span>
                       </div>
-                      <span class="mt-2 text-xs text-muted-foreground">Menit</span>
+                      <span class="mt-1 text-[10px] sm:text-xs text-muted-foreground">Menit</span>
                     </div>
                     <div class="flex flex-col items-center">
-                      <div class="relative h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-dashed border-cyan-500 flex items-center justify-center">
-                        <span class="text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.seconds ?? 0) }}</span>
+                      <div class="relative h-14 w-14 sm:h-16 sm:w-16 md:h-24 md:w-24 rounded-full border-2 border-dashed border-cyan-500 flex items-center justify-center">
+                        <span class="text-xl sm:text-2xl md:text-3xl font-semibold">{{ pad2(countdownState.remain?.seconds ?? 0) }}</span>
                       </div>
-                      <span class="mt-2 text-xs text-muted-foreground">Detik</span>
+                      <span class="mt-1 text-[10px] sm:text-xs text-muted-foreground">Detik</span>
                     </div>
                   </div>
                 </template>
                 <template v-else>
                     <div v-if="winnerItem" class="mt-3">
                       <Card class="overflow-hidden">
-                        <CardHeader class="p-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white">
+                        <CardHeader class="p-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white flex items-center justify-between">
                           <h3 class="text-sm md:text-base">Pemenang</h3>
+                          <Badge class="bg-amber-500 text-amber-900 border-transparent">
+                            <Trophy />
+                            Juara
+                          </Badge>
                         </CardHeader>
-                        <CardContent class="p-4 flex items-center gap-4">
+                        <CardContent class="p-4 flex flex-col md:flex-row items-center md:items-start gap-4">
                           <img
                             v-if="winnerItem.foto"
                             :src="photoUrl(winnerItem.foto)"
                             alt="Foto Pemenang"
-                            class="h-16 w-16 object-cover rounded"
+                            class="w-full h-40 object-contain md:object-cover rounded bg-muted md:bg-transparent md:h-16 md:w-16"
                           />
-                          <div v-else class="h-16 w-16 bg-muted rounded" />
-                          <div class="flex-1">
-                            <div class="text-sm font-semibold">{{ winnerItem.nama }}</div>
-                            <div class="text-xs text-muted-foreground">Total Suara: {{ winnerItem.votes_count }}</div>
+                          <div v-else class="w-full h-40 bg-muted rounded md:h-16 md:w-16" />
+                          <div class="w-full md:flex-1 text-center md:text-left">
+                            <div class="text-base md:text-sm font-semibold">{{ winnerItem.nama }}</div>
+                            <div class="text-sm md:text-xs text-muted-foreground">Total Suara: {{ winnerItem.votes_count }}</div>
                           </div>
                         </CardContent>
                       </Card>

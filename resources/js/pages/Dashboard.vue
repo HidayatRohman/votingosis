@@ -97,6 +97,17 @@ const countdownState = computed(() => {
   if (now > endMs) return { state: 'after' };
   return { state: 'during', remain: timeTo(end) };
 });
+
+// Hitung pemenang (kandidat dengan suara terbanyak) setelah voting berakhir
+const winnerItem = computed(() => {
+  const items = props.stats?.items ?? [];
+  const total = props.stats?.totalVotes ?? 0;
+  if (!items.length || !total) return null as any;
+  return items.reduce((best: any, cur: any) => {
+    if (!best) return cur;
+    return cur.votes_count > best.votes_count ? cur : best;
+  }, null as any);
+});
 </script>
 
 <template>
@@ -149,6 +160,27 @@ const countdownState = computed(() => {
                 </template>
                 <template v-else>
                     <p class="text-sm text-muted-foreground">Voting telah berakhir.</p>
+                    <div v-if="winnerItem" class="mt-3">
+                      <Card class="overflow-hidden">
+                        <CardHeader class="p-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white">
+                          <h3 class="text-sm md:text-base">Pemenang</h3>
+                        </CardHeader>
+                        <CardContent class="p-4 flex items-center gap-4">
+                          <img
+                            v-if="winnerItem.foto"
+                            :src="photoUrl(winnerItem.foto)"
+                            alt="Foto Pemenang"
+                            class="h-16 w-16 object-cover rounded"
+                          />
+                          <div v-else class="h-16 w-16 bg-muted rounded" />
+                          <div class="flex-1">
+                            <div class="text-sm font-semibold">{{ winnerItem.nama }}</div>
+                            <div class="text-xs text-muted-foreground">Total Suara: {{ winnerItem.votes_count }}</div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                    <div v-else class="mt-1 text-sm text-muted-foreground">Belum ada suara yang masuk.</div>
                 </template>
             </div>
 

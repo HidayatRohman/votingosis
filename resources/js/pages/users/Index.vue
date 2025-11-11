@@ -8,7 +8,7 @@ import Card from '@/components/ui/card/Card.vue';
 import CardHeader from '@/components/ui/card/CardHeader.vue';
 import CardContent from '@/components/ui/card/CardContent.vue';
 import CardAction from '@/components/ui/card/CardAction.vue';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogScrollContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Pencil, Trash2, UserPlus } from 'lucide-vue-next';
@@ -112,7 +112,7 @@ function submitCreate() {
       </Card>
 
       <Dialog v-model:open="confirmOpen">
-        <DialogContent>
+        <DialogScrollContent>
           <DialogHeader>
             <DialogTitle>Hapus User?</DialogTitle>
             <DialogDescription>
@@ -123,16 +123,16 @@ function submitCreate() {
             <Button variant="outline" @click="confirmOpen = false">Batal</Button>
             <Button class="bg-red-600 hover:bg-red-700" :disabled="formDelete.processing" @click="performDelete">Hapus</Button>
           </DialogFooter>
-        </DialogContent>
+        </DialogScrollContent>
       </Dialog>
 
       <Dialog v-model:open="createOpen">
-        <DialogContent>
+        <DialogScrollContent>
           <DialogHeader>
             <DialogTitle>Tambah User</DialogTitle>
             <DialogDescription>Masukkan data pengguna baru.</DialogDescription>
           </DialogHeader>
-          <div class="grid gap-4">
+          <div class="grid gap-4 max-h-[75vh] overflow-y-auto pr-1">
             <div class="grid gap-2">
               <Label for="name">Nama</Label>
               <Input id="name" v-model="formCreate.name" type="text" />
@@ -166,7 +166,7 @@ function submitCreate() {
             <Button variant="outline" @click="createOpen = false">Batal</Button>
             <Button :disabled="formCreate.processing" @click="submitCreate">Simpan</Button>
           </DialogFooter>
-        </DialogContent>
+        </DialogScrollContent>
       </Dialog>
     </div>
   </AppLayout>

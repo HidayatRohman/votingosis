@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import {
     Dialog,
-    DialogContent,
+    DialogScrollContent,
     DialogDescription,
     DialogHeader,
     DialogTitle,
@@ -111,7 +111,7 @@ watch(
 
 <template>
     <Dialog :open="isOpen" @update:open="isOpen = $event">
-        <DialogContent class="sm:max-w-md">
+        <DialogScrollContent class="sm:max-w-md">
             <DialogHeader class="flex items-center justify-center">
                 <div
                     class="mb-3 w-auto rounded-full border border-border bg-card p-0.5 shadow-sm"
@@ -149,7 +149,7 @@ watch(
             </DialogHeader>
 
             <div
-                class="relative flex w-auto flex-col items-center justify-center space-y-5"
+                class="relative flex w-auto flex-col items-center justify-center space-y-5 max-h-[75vh] overflow-y-auto"
             >
                 <template v-if="!showVerificationStep">
                     <AlertError v-if="errors?.length" :errors="errors" />
@@ -295,6 +295,6 @@ watch(
                     </Form>
                 </template>
             </div>
-        </DialogContent>
+        </DialogScrollContent>
     </Dialog>
 </template>

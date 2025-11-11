@@ -6,7 +6,7 @@ import AppContent from '@/components/AppContent.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link, router, useForm } from '@inertiajs/vue3';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogScrollContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import VotingForm from '@/components/voting/VotingForm.vue';
 import { ref } from 'vue';
 
@@ -109,7 +109,7 @@ const submitEdit = () => {
 
         <!-- Modal Tambah Data Voting -->
         <Dialog v-model:open="createOpen">
-          <DialogContent class="sm:max-w-2xl">
+          <DialogScrollContent class="sm:max-w-2xl">
             <DialogHeader class="p-0">
               <div
                 class="rounded-t-lg -mx-6 -mt-6 px-6 pt-6 pb-4 border-b border-sidebar-border/60 bg-gradient-to-r from-sky-100 via-indigo-100 to-fuchsia-100 dark:from-sky-900/40 dark:via-indigo-900/40 dark:to-fuchsia-900/40"
@@ -118,7 +118,7 @@ const submitEdit = () => {
                 <DialogDescription class="mt-1 text-sm text-neutral-700 dark:text-neutral-300">Isi form kandidat OSIS dengan lengkap.</DialogDescription>
               </div>
             </DialogHeader>
-            <div class="py-2">
+            <div class="py-2 max-h-[75vh] overflow-y-auto">
               <VotingForm :form="form" :on-submit="submitCreate" variant="plain" :show-actions="false" />
             </div>
             <DialogFooter>
@@ -127,12 +127,12 @@ const submitEdit = () => {
                 <Button variant="default" @click="submitCreate">Simpan</Button>
               </div>
             </DialogFooter>
-          </DialogContent>
+          </DialogScrollContent>
         </Dialog>
 
         <!-- Modal Edit Data Voting -->
         <Dialog v-model:open="editOpen">
-          <DialogContent class="sm:max-w-2xl">
+          <DialogScrollContent class="sm:max-w-2xl">
             <DialogHeader class="p-0">
               <div
                 class="rounded-t-lg -mx-6 -mt-6 px-6 pt-6 pb-4 border-b border-sidebar-border/60 bg-gradient-to-r from-sky-100 via-indigo-100 to-fuchsia-100 dark:from-sky-900/40 dark:via-indigo-900/40 dark:to-fuchsia-900/40"
@@ -141,7 +141,7 @@ const submitEdit = () => {
                 <DialogDescription class="mt-1 text-sm text-neutral-700 dark:text-neutral-300">Perbarui data kandidat OSIS.</DialogDescription>
               </div>
             </DialogHeader>
-            <div class="py-2">
+            <div class="py-2 max-h-[75vh] overflow-y-auto">
               <VotingForm :form="editForm" :on-submit="submitEdit" variant="plain" :show-actions="false" :editing-item="editingItem" />
             </div>
             <DialogFooter>
@@ -150,7 +150,7 @@ const submitEdit = () => {
                 <Button variant="default" @click="submitEdit">Simpan</Button>
               </div>
             </DialogFooter>
-          </DialogContent>
+          </DialogScrollContent>
         </Dialog>
 
         <Card class="mt-4">

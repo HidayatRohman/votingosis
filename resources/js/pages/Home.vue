@@ -3,7 +3,7 @@ import { dashboard, login, register } from '@/routes';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import { computed, ref } from 'vue';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogScrollContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 withDefaults(
@@ -67,7 +67,7 @@ const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
 
     <!-- Dialog preview kandidat dari "Daftar Kandidat" -->
     <Dialog v-model:open="previewOpen">
-      <DialogContent class="sm:max-w-3xl">
+      <DialogScrollContent class="sm:max-w-3xl">
         <DialogHeader class="p-0">
           <div class="rounded-t-lg -mx-6 -mt-6 px-6 pt-6 pb-4 border-b border-sidebar-border/60 bg-gradient-to-r from-sky-100 via-indigo-100 to-fuchsia-100 dark:from-sky-900/40 dark:via-indigo-900/40 dark:to-fuchsia-900/40">
             <DialogTitle class="text-lg md:text-xl font-semibold">Daftar Kandidat</DialogTitle>
@@ -75,7 +75,7 @@ const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
           </div>
         </DialogHeader>
 
-        <div class="py-2">
+        <div class="py-2 max-h-[75vh] overflow-y-auto">
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <Card v-for="item in ($props.previewCandidates ?? [])" :key="item.id" class="overflow-hidden">
               <CardHeader class="flex items-center justify-center text-center">
@@ -107,7 +107,7 @@ const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
           </div>
           <div v-if="(($props.previewCandidates?.length ?? 0) === 0)" class="text-sm text-muted-foreground">Belum ada kandidat.</div>
         </div>
-      </DialogContent>
+      </DialogScrollContent>
     </Dialog>
 
     <!-- Wave separator -->

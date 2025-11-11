@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogClose,
-    DialogContent,
+    DialogScrollContent,
     DialogDescription,
     DialogFooter,
     DialogHeader,
@@ -44,7 +44,7 @@ const passwordInput = useTemplateRef('passwordInput');
                         >Delete account</Button
                     >
                 </DialogTrigger>
-                <DialogContent>
+                <DialogScrollContent>
                     <Form
                         v-bind="ProfileController.destroy.form()"
                         reset-on-success
@@ -108,7 +108,7 @@ const passwordInput = useTemplateRef('passwordInput');
                             </Button>
                         </DialogFooter>
                     </Form>
-                </DialogContent>
+                </DialogScrollContent>
             </Dialog>
         </div>
     </div>

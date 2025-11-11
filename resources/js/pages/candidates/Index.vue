@@ -8,8 +8,13 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ref } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
+import type { BreadcrumbItem } from '@/types';
 
 const props = defineProps<{ items: any[]; hasVoted: boolean; isVotingOpen: boolean }>();
+
+const breadcrumbItems: BreadcrumbItem[] = [
+  { title: 'Kandidat', href: '/candidates' },
+];
 
 const photoUrl = (path?: string) => (path ? `/storage/${path}` : undefined);
 
@@ -30,20 +35,16 @@ const openDetail = (item: any) => {
   <AppShell variant="sidebar">
     <AppSidebar />
     <AppContent variant="sidebar" class="p-4">
-        <AppSidebarHeader />
+        <AppSidebarHeader :breadcrumbs="breadcrumbItems" />
 
-        <!-- Hero Header dengan background -->
+        <!-- Hero Header dengan background biru dan teks kontras -->
         <div
-          class="relative overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border mb-4"
+          class="relative overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border mt-3 mb-4 bg-gradient-to-r from-sky-600 to-indigo-600 text-white"
         >
-          <div
-            class="absolute inset-0 opacity-25"
-            :style="{ background: 'radial-gradient(circle at 15% 20%, #93c5fd33, transparent 35%), radial-gradient(circle at 85% 0%, #60a5fa33, transparent 30%), linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #1d4ed8 100%)' }"
-          />
           <div class="relative p-6 md:p-8 flex items-center justify-between">
             <div>
               <h1 class="text-2xl md:text-3xl font-bold">Kandidat OSIS</h1>
-              <p class="mt-1 text-sm md:text-base text-neutral-700 dark:text-neutral-300">
+              <p class="mt-1 text-sm md:text-base text-white/90">
                 Pilih kandidat terbaik Anda. Satu akun hanya bisa vote sekali.
               </p>
             </div>

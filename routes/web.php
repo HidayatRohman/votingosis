@@ -37,8 +37,10 @@ Route::get('dashboard', function () {
 // Voting CRUD routes
 Route::middleware(['auth'])->group(function () {
     Route::resource('voting', \App\Http\Controllers\VotingController::class);
-    // Users CRUD routes
-    Route::resource('users', \App\Http\Controllers\UserController::class);
+    // Users CRUD routes (admin only)
+    Route::middleware('admin')->group(function () {
+        Route::resource('users', \App\Http\Controllers\UserController::class);
+    });
     // Kandidat list page
     Route::get('candidates', [\App\Http\Controllers\VotingController::class, 'candidates'])->name('candidates.index');
     // Vote action (satu kali vote per user)

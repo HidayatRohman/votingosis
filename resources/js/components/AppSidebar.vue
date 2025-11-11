@@ -12,7 +12,8 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import { LayoutGrid, Users } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
@@ -39,6 +40,14 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
+const page = usePage();
+const role = computed(() => (page.props?.auth?.user?.role ?? 'user'));
+const filteredMainNavItems = computed(() => {
+    return role.value === 'admin'
+        ? mainNavItems
+        : mainNavItems.filter((item) => ['Dashboard', 'Kandidat'].includes(item.title));
+});
+
 </script>
 
 <template>
@@ -55,9 +64,9 @@ const mainNavItems: NavItem[] = [
             </SidebarMenu>
         </SidebarHeader>
 
-        <SidebarContent>
-            <NavMain :items="mainNavItems" />
-        </SidebarContent>
+    <SidebarContent>
+            <NavMain :items="filteredMainNavItems" />
+    </SidebarContent>
 
         <SidebarFooter>
             <NavUser />

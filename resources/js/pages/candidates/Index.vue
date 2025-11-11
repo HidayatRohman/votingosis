@@ -41,14 +41,14 @@ const openDetail = (item: any) => {
         <div
           class="relative overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border mt-3 mb-4 bg-gradient-to-r from-sky-600 to-indigo-600 text-white"
         >
-          <div class="relative p-6 md:p-8 flex items-center justify-between">
+          <div class="relative p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 class="text-2xl md:text-3xl font-bold">Kandidat OSIS</h1>
-              <p class="mt-1 text-sm md:text-base text-white/90">
+              <h1 class="text-xl md:text-2xl font-bold">Kandidat OSIS</h1>
+              <p class="mt-1 text-xs md:text-sm text-white/90">
                 Pilih kandidat terbaik Anda. Satu akun hanya bisa vote sekali.
               </p>
             </div>
-            <div>
+            <div class="mt-3 md:mt-0">
               <span
                 v-if="props.hasVoted"
                 class="text-xs font-medium px-3 py-1 rounded bg-green-600 text-white"

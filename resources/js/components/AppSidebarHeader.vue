@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { SidebarTrigger } from '@/components/ui/sidebar';
+import AppLogoIcon from '@/components/AppLogoIcon.vue';
+import { dashboard } from '@/routes';
 import type { BreadcrumbItemType } from '@/types';
 import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 
 withDefaults(
     defineProps<{
@@ -16,6 +19,7 @@ withDefaults(
 
 const page = usePage();
 const isDashboard = computed(() => (page?.url ?? '').startsWith('/dashboard'));
+const appLogoUrl = computed(() => page.props.appLogoUrl as string | null);
 </script>
 
 <template>
@@ -32,6 +36,13 @@ const isDashboard = computed(() => (page?.url ?? '').startsWith('/dashboard'));
             <template v-if="breadcrumbs && breadcrumbs.length > 0">
                 <Breadcrumbs :breadcrumbs="breadcrumbs" :variant="isDashboard ? 'inverted' : 'default'" />
             </template>
+        </div>
+        <!-- Logo kecil di kanan untuk tampilan mobile -->
+        <div class="ml-auto md:hidden">
+            <Link :href="dashboard()" class="flex items-center">
+                <img v-if="appLogoUrl" :src="appLogoUrl" alt="Logo" class="h-6 w-auto object-contain" />
+                <AppLogoIcon v-else :class="['size-6', isDashboard ? 'text-white' : 'text-foreground']" />
+            </Link>
         </div>
     </header>
 </template>

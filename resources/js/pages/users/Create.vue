@@ -35,9 +35,9 @@ function submit() {
     <Head title="Create User" />
 
     <div class="px-4 py-6">
-      <Card class="max-w-xl">
-        <CardHeader class="border-b pb-4">
-          <HeadingSmall title="Tambah User" description="Buat akun pengguna baru" />
+      <Card class="max-w-xl overflow-hidden">
+        <CardHeader class="p-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white">
+          <HeadingSmall title="Tambah User" description="Buat akun pengguna baru" contrast />
         </CardHeader>
         <CardContent>
           <div class="mt-4 grid gap-4">

@@ -62,9 +62,9 @@ function submitCreate() {
     <Head title="Users" />
 
     <div class="px-4 py-6">
-      <Card>
-        <CardHeader class="border-b pb-4">
-          <HeadingSmall title="Users" description="Kelola pengguna aplikasi" />
+      <Card class="overflow-hidden">
+        <CardHeader class="p-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white">
+          <HeadingSmall title="Users" description="Kelola pengguna aplikasi" contrast />
           <CardAction>
             <Button @click="createOpen = true">
               <UserPlus class="mr-2 h-4 w-4" />

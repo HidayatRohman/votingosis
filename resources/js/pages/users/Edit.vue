@@ -42,9 +42,9 @@ function submit(id: number) {
     <Head title="Edit User" />
 
     <div class="px-4 py-6">
-      <Card class="max-w-xl">
-        <CardHeader class="border-b pb-4">
-          <HeadingSmall title="Edit User" description="Perbarui data pengguna" />
+      <Card class="max-w-xl overflow-hidden">
+        <CardHeader class="p-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white">
+          <HeadingSmall title="Edit User" description="Perbarui data pengguna" contrast />
         </CardHeader>
         <CardContent>
           <div class="mt-4 grid gap-4">
